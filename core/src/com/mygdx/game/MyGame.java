@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+
+// TODO: Complete GameScreen First
 public class MyGame extends Game {
 	SpriteBatch batch;
 //	Texture img;

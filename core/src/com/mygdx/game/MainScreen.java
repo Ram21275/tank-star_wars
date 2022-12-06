@@ -22,6 +22,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+
+//TODO: refactor VerticalGroup to table
+//TODO: make the components working
 public class MainScreen implements Screen {
 
     private MyGame game;

@@ -32,8 +32,8 @@ public class GameScreen implements Screen {
     private TextButton exit;
     private Label Power;
     private Label Angle;
-    private int pow = 50;
-    private int ang = 60;
+    private int pow = 50;  // should be toggled after each player turn
+    private int ang = 60;  // should be toggled after each player turn
     private TextButton fire;
     private Table downlabel;
     private Table uplabel;
@@ -43,8 +43,6 @@ public class GameScreen implements Screen {
     GameScreen(MyGame game)
     {
         this.game = game;
-
-
     }
     @Override
     public void show() {
@@ -114,6 +112,16 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Game should be rendered here.
+
+
+        //UI drawn here
+        /*
+        * while fire animation buttons should become irresponsive
+        * draging on screen and scrolling should help in navigation
+        *
+        *  */
         stage.draw();
 
         if(pause.isChecked())
