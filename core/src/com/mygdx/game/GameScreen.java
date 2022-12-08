@@ -3,45 +3,48 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.HashMap;
+
 public class GameScreen implements Screen {
     private MyGame game;
+    private ActivePlayer[] player;
+    private int playerturn;
+    private ProgressBar health_p1;
+    private ProgressBar health_p2;
+    private TextButton power_left;
+    private TextButton power_right;
+    private TextButton angle_left;
+    private TextButton angle_right;
+    private TextButton pause;
+    private TextButton save;
+    private TextButton resume;
+    private TextButton exit;
+    private int power = 50;  // should be toggled after each player turn
+    private int angle = 60;  // should be toggled after each player turn
+    private Label power_box;
+    private Label angle_box;
+    private Ground ground;
+    private HashMap<Integer,AirDrop> airdroplist;
+
     private Stage stage;
     private Skin skin;
     private Table table;
     private int h1 = 40;
     private int h2 = 70;
-    private ProgressBar health1;
-    private ProgressBar health2;
-    private TextButton pause;
-    private TextButton save;
-    private TextButton resume;
-    private TextButton left1;
-    private TextButton right1;
-    private TextButton left2;
-    private TextButton right2;
     private TextButton bullet;
-    private TextButton exit;
-    private Label Power;
-    private Label Angle;
-    private int pow = 50;  // should be toggled after each player turn
-    private int ang = 60;  // should be toggled after each player turn
     private TextButton fire;
     private Table downlabel;
     private Table uplabel;
-
     private Window pause_menu;
 
     GameScreen(MyGame game)
     {
+        //initialize variables here: non-reutilized;
         this.game = game;
     }
     @Override
@@ -52,20 +55,20 @@ public class GameScreen implements Screen {
 
         table = new Table();
         stage.addActor(table);
-        health1 = new ProgressBar(0,100,1,false,skin);
-        health2 = new ProgressBar(0,100,1,false,skin);
+        health_p1 = new ProgressBar(0,100,1,false,skin);
+        health_p2 = new ProgressBar(0,100,1,false,skin);
         pause = new TextButton("pause",skin);
         save = new TextButton("Save Game",skin);
         resume = new TextButton("Resume",skin);
-        left1  = new TextButton("<",skin);
-        left2  = new TextButton("<",skin);
-        right1  = new TextButton(">",skin);
-        right2  = new TextButton(">",skin);
+        power_left = new TextButton("<",skin);
+        angle_left = new TextButton("<",skin);
+        power_right  = new TextButton(">",skin);
+        angle_right = new TextButton(">",skin);
         bullet = new TextButton("Big One",skin);
         exit = new TextButton("Exit",skin);
 
-        Power = new Label("" + pow,skin);
-        Angle = new Label("" + ang,skin);
+        power_box = new Label("" + power,skin);
+        angle_box = new Label("" + angle,skin);
         fire = new TextButton("FIRE",skin);
         downlabel = new Table();
         uplabel = new Table();
@@ -81,21 +84,21 @@ public class GameScreen implements Screen {
         pause_menu.row();
         pause_menu.add(exit).width(200).height(60).pad(20);
 
-        health2.setRotation(health2.getRotation() + 180);
-        uplabel.add(health1).align(Align.left).expandX().padRight(200).width(170).height(30);
+        health_p2.setRotation(health_p2.getRotation() + 180);
+        uplabel.add(health_p1).align(Align.left).expandX().padRight(200).width(170).height(30);
         uplabel.add(pause).align(Align.center).expandX().height(40);
-        uplabel.add(health2).align(Align.right).expandX().padLeft(200).width(170).height(30);
+        uplabel.add(health_p2).align(Align.right).expandX().padLeft(200).width(170).height(30);
 
 
         downlabel.setColor(1,1,0,1);
         downlabel.add(bullet).align(Align.left).space(0,0,0,0).height(30).width((200));
         downlabel.add(fire).align(Align.center).space(0,150,0,130).height(50).width((100));
-        downlabel.add(left1).align(Align.right).space(0,40,0,0).height(30).width((30));
-        downlabel.add(Power).align(Align.right).space(0,5,0,5).height(30).width((30));
-        downlabel.add(right1).align(Align.right).space(0,0,0,0).height(30).width((30));
-        downlabel.add(left2).align(Align.right).space(0,20,0,0).height(30).width((30));
-        downlabel.add(Angle).align(Align.right).space(0,5,0,5).height(30).width((30));
-        downlabel.add(right2).align(Align.right).space(0,0,0,0).height(30).width((30));
+        downlabel.add(power_left).align(Align.right).space(0,40,0,0).height(30).width((30));
+        downlabel.add(power_box).align(Align.right).space(0,5,0,5).height(30).width((30));
+        downlabel.add(power_right).align(Align.right).space(0,0,0,0).height(30).width((30));
+        downlabel.add(angle_left).align(Align.right).space(0,20,0,0).height(30).width((30));
+        downlabel.add(angle_box).align(Align.right).space(0,5,0,5).height(30).width((30));
+        downlabel.add(angle_right).align(Align.right).space(0,0,0,0).height(30).width((30));
         table.setFillParent(true);
 //        downlabel.setDebug(true);
 //        uplabel.setDebug(true);
@@ -148,32 +151,32 @@ public class GameScreen implements Screen {
             game.setScreen(game.rscreen);
             fire.setChecked(false);
         }
-        if(left1.isChecked())
+        if(power_left.isChecked())
         {
-            pow--;
-            Power.setText(pow);
-            left1.setChecked(false);
+            power--;
+            power_box.setText(power);
+            power_left.setChecked(false);
 
         }
-        if(left2.isChecked())
+        if(angle_left.isChecked())
         {
-            ang--;
-            Angle.setText(ang);
-            left2.setChecked(false);
+            angle--;
+            angle_box.setText(angle);
+            angle_left.setChecked(false);
 
         }
-        if(right1.isChecked())
+        if(power_right.isChecked())
         {
-            pow++;
-            Power.setText(pow);
-            right1.setChecked(false);
+            power++;
+            power_box.setText(power);
+            power_right.setChecked(false);
 
         }
-        if(right2.isChecked())
+        if(angle_right.isChecked())
         {
-            ang++;
-            Angle.setText(ang);
-            right2.setChecked(false);
+            angle++;
+            angle_box.setText(angle);
+            angle_right.setChecked(false);
 
         }
     }
@@ -202,4 +205,44 @@ public class GameScreen implements Screen {
     public void dispose() {
 
     }
+
+    public ActivePlayer getPlayer1() { return player[0]; }
+    public ActivePlayer getPlayer2() { return player[1]; }
+    public ActivePlayer getActivePlayer() { return player[playerturn]; }
+
+    public int getPower() {
+        return power;
+    }
+
+    public int getAngle() {
+        return angle;
+    }
+
+    public Ground getGround() {
+        return ground;
+    }
+
+    public HashMap<Integer, AirDrop> getAirdroplist() {
+        return airdroplist;
+    }
+
+    public void setAngle(int angle) {
+        this.angle = angle;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
+    public Integer addAirDrop()
+    {
+        //TODO: inplement addAirDrop
+        return 0;
+    }
+    public void removeAirDrop(int ID) {
+        this.airdroplist.remove(ID);
+    }
+    public void endGame(ActivePlayer loser) {
+        // todo implement after result screen;
+    }
+
 }
