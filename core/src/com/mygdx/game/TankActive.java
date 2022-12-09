@@ -1,11 +1,12 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.Vector2;
+import sun.java2d.xr.XIDGenerator;
 
 import java.util.HashMap;
 
 //todo: make this class, delete unnecessary setters getters;
-public abstract class TankActive {
+public abstract class TankActive implements Collidable {
     private Vector2 position;
     private int slope_angle;
     private HashMap<Integer,Bullet> ammunition;
@@ -22,6 +23,25 @@ public abstract class TankActive {
     private Ground ground;
     private ActivePlayer owner;
 
+    public void setHealth(int health){
+        owner.setHealth(health);
+    }
+    public int getHealth(){
+        return owner.getHealth();
+    }
+    public void fireBullet(int ID)
+    {
+    }
+    public void moveTank(float delta)
+    {
+
+    }
+    public void destroyTank(){
+
+    }
+    public void onHitFallBack(int accuracy) {
+
+    }
     public Vector2 getPosition() {
         return position;
     }
@@ -106,9 +126,7 @@ public abstract class TankActive {
         return max_speed;
     }
 
-    public void setMax_speed(int max_speed) {
-        this.max_speed = max_speed;
-    }
+    public  void setMax_speed(int max_speed){this.max_speed  = max_speed;};
 
     public TankBase getBase() {
         return base;
@@ -142,7 +160,112 @@ public abstract class TankActive {
         this.owner = owner;
     }
 
+    public void getAirDrop(AirDrop airdrop) {
+
+    }
+    public abstract void generateTankBase();
+    public abstract void generateTankNozzle();
+    public abstract void setSpeed();
+    public abstract void loadAmmo();
 
 
+}
 
+class AbramsActive extends TankActive {
+
+    @Override
+    public void collide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public void generateTankBase() {
+
+    }
+
+    @Override
+    public void generateTankNozzle() {
+
+    }
+
+    @Override
+    public void setSpeed() {
+
+    }
+
+    @Override
+    public void loadAmmo() {
+
+    }
+}
+
+class FrostActive extends TankActive {
+
+    @Override
+    public void collide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public void generateTankBase() {
+
+    }
+
+    @Override
+    public void generateTankNozzle() {
+
+    }
+
+    @Override
+    public void setSpeed() {
+
+    }
+
+    @Override
+    public void loadAmmo() {
+
+    }
+}
+
+class BuratinoActive extends TankActive {
+
+    @Override
+    public void collide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
+
+    @Override
+    public void generateTankBase() {
+
+    }
+
+    @Override
+    public void generateTankNozzle() {
+
+    }
+
+    @Override
+    public void setSpeed() {
+
+    }
+
+    @Override
+    public void loadAmmo() {
+
+    }
 }

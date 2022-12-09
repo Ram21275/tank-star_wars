@@ -229,7 +229,7 @@ public class MainScreen implements Screen {
         for (int i = 0; i < 5; i++) {
             if(save[i].isChecked())
             {
-                game.setScreen(game.gscreen);
+                game.setScreen(game.getGscreen());
                 save[i].setChecked(false);
             }
         }
@@ -240,7 +240,7 @@ public class MainScreen implements Screen {
         }
         if(new_game_start_game.isChecked())
         {
-            game.setScreen(game.gscreen);
+            game.setScreen(game.getGscreen());
             new_game_start_game.setChecked(false);
         }
         if(load_game_exit.isChecked())

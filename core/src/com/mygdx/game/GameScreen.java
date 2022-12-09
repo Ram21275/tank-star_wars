@@ -142,13 +142,13 @@ public class GameScreen implements Screen {
         if(exit.isChecked())
         {
             pause_menu.remove();
-            game.setScreen(game.mscreen);
+            game.setScreen(game.getMscreen());
             exit.setChecked(false);
         }
 
         if(fire.isChecked())
         {
-            game.setScreen(game.rscreen);
+            game.setScreen(game.getRscreen());
             fire.setChecked(false);
         }
         if(power_left.isChecked())

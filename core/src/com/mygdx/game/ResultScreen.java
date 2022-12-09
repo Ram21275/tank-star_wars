@@ -91,13 +91,13 @@ public class ResultScreen implements Screen {
 
         if(replay.isChecked())
         {
-            game.setScreen(game.gscreen);
+            game.setScreen(game.getGscreen());
             replay.setChecked(false);
         }
 
         if(exit_main.isChecked())
         {
-            game.setScreen(game.mscreen);
+            game.setScreen(game.getMscreen());
             replay.setChecked(false);
         }
     }
