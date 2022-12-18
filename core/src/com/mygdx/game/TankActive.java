@@ -46,10 +46,10 @@ public abstract class TankActive implements Collidable,Renderable {
 
     }
     public void generatePhysicsBody() {
-        BodyDef bd = new BodyDef(); bd.type = BodyDef.BodyType.DynamicBody; bd.position.set(position); bd.fixedRotation = false;
+        BodyDef bd = new BodyDef(); bd.type = BodyDef.BodyType.DynamicBody; bd.position.set(position.x/32f,position.y/32f); bd.fixedRotation = false;
         tank_physics = MyGame.handle.physics_world.createBody(bd);
 
-        PolygonShape ps  = new PolygonShape(); ps.setAsBox(20/32f,10/32f);
+        PolygonShape ps  = new PolygonShape(); ps.setAsBox(10/32f,5f/32f);
         tank_physics.createFixture(ps,1.0f); ps.dispose();
     }
     public void setHealth(int health){
@@ -87,8 +87,9 @@ public abstract class TankActive implements Collidable,Renderable {
         lrv = lin; rrv = rin;
         if(lin)
         {
-            Vector2 v = new Vector2(-5f,0);
-            tank_physics.setLinearVelocity(v.rotateRad(tank_physics.getAngle()));
+            Vector2 v = new Vector2(-3f,-1);
+            tank_physics.setLinearVelocity(v);
+//            tank_physics.applyForce(v,tank_physics.getPosition(),true);
             if(fuel > 0){
                 fuel -= 1 * (delta);
             } else {
@@ -97,8 +98,9 @@ public abstract class TankActive implements Collidable,Renderable {
         }
         if (rin){
 
-            Vector2 v = new Vector2(5f,0);
-            tank_physics.setLinearVelocity(v.rotateRad(tank_physics.getAngle()));
+            Vector2 v = new Vector2(3f,-1);
+            tank_physics.setLinearVelocity(v);
+//            tank_physics.applyForce(v,tank_physics.getPosition(),true);
             if(fuel > 0){
                 fuel -= 1 * (delta);
             } else {
@@ -243,6 +245,10 @@ public abstract class TankActive implements Collidable,Renderable {
 }
 
 class AbramsActive extends TankActive {
+    public AbramsActive() {
+        super();
+        System.out.println("yolo");
+    }
 
     @Override
     public void collide(Collidable collide_with) {

@@ -32,6 +32,7 @@ public class MyGame extends Game {
 	public OrthographicCamera camera;
 //	World world = new World(new Vector2(0, 0), true);
 	Box2DDebugRenderer debugRenderer;
+	public TankActive tank;
 
 
 	Ground ground; //todo debug testing to be omitted after test
@@ -50,6 +51,7 @@ public class MyGame extends Game {
 		debugRenderer = new Box2DDebugRenderer();
 		MyGame.handle = this;
 		ground = new Ground();
+		tank = new AbramsActive();
 
 	}
 
@@ -62,12 +64,14 @@ public class MyGame extends Game {
 		Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		physics_world.step(1 / 60f, 6, 2);
 		debugRenderer.render(physics_world, camera.combined.scl(32));
 //		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
 //		batch.setProjectionMatrix(camera.combined);
 //		batch.begin();
 //		ground.render();
+		tank.render();
 //		batch.end();
 		super.render();
 	}
