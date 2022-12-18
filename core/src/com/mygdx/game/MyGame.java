@@ -31,7 +31,7 @@ public class MyGame extends Game {
 	public OrthographicCamera camera;
 	World world = new World(new Vector2(0, -10), true);
 
-	//	private Ground ground; //todo debug testing to be omitted after test
+	private Ground ground; //todo debug testing to be omitted after test
 	Vector2 def_screen_size  = new Vector2(16*50,9*50);
 	@Override
 	public void create () {
@@ -42,8 +42,8 @@ public class MyGame extends Game {
 		mscreen = new MainScreen(this);
 		gscreen = new GameScreen(this);
 		rscreen = new ResultScreen(this);
-//		ground = new Ground();
-		this.setScreen(new MainScreen(this));
+		ground = new Ground();
+//		this.setScreen(new MainScreen(this));
 		MyGame.handle = this;
 
 	}
@@ -59,10 +59,10 @@ public class MyGame extends Game {
 		Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 //		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
-//		batch.setProjectionMatrix(camera.combined);
-//		batch.begin();
-//		ground.render();
-//		batch.end();
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+		ground.render();
+		batch.end();
 		super.render();
 	}
 	

@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class ResultScreen implements Screen {
+public class ResultScreen implements Screen,Renderable {
     private MyGame game;
     private Stage stage;
     private Skin skin;
@@ -23,6 +22,11 @@ public class ResultScreen implements Screen {
     private Image player_tank;
     private Label result;
     private Label player;
+    private int save_state_id;
+    private Label result_p1_label;
+    private int label_p1;
+    private Label coins_earned_label;
+
     ResultScreen(MyGame game)
     {
         this.game = game;
@@ -125,6 +129,41 @@ public class ResultScreen implements Screen {
 
     @Override
     public void dispose() {
+
+    }
+
+    @Override
+    public void render(){
+
+    }
+
+    public void replay(){
+
+    }
+
+    public void exit(){
+
+    }
+    public void setPlayerPassive(){
+
+    }
+
+    public void setResult(){
+
+    }
+    public void setCoinsEarned(){
+
+    }
+    public void addCoinsToAccount(){
+
+    }
+    public void generateAssets(){
+
+    }
+    public void linkUIElements(){
+
+    }
+    public void removeSaveState(){
 
     }
 }
