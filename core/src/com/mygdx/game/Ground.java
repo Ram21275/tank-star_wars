@@ -72,6 +72,7 @@ public class Ground implements Collidable , Renderable {
 
         shape.setIndices(indices);
     }
+
     public void generateTerrain()
     {
         float max = 0.625f;

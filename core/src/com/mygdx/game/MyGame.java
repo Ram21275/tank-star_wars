@@ -29,26 +29,28 @@ public class MyGame extends Game {
 	public World physics_world;
 	public static MyGame handle;
 	public OrthographicCamera camera;
-	private Ground ground; //todo debug testing to be omitted after test
+	World world = new World(new Vector2(0, -10), true);
+
+	//	private Ground ground; //todo debug testing to be omitted after test
 	Vector2 def_screen_size  = new Vector2(16*50,9*50);
 	@Override
 	public void create () {
-
+		world = new World(new Vector2(0, -10), true); // todo debug testing to be omited after done
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
 		mscreen = new MainScreen(this);
 		gscreen = new GameScreen(this);
 		rscreen = new ResultScreen(this);
-		ground = new Ground();
-//		this.setScreen(new MainScreen(this));
+//		ground = new Ground();
+		this.setScreen(new MainScreen(this));
 		MyGame.handle = this;
 
 	}
 
 	@Override
 	public void render () {
-		super.render();
+
 		Gdx.gl20.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl20.glClearColor(0.2f, 0.2f, 0.2f, 1);
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -59,9 +61,9 @@ public class MyGame extends Game {
 		camera.update();
 //		batch.setProjectionMatrix(camera.combined);
 //		batch.begin();
-		ground.render();
+//		ground.render();
 //		batch.end();
-
+		super.render();
 	}
 	
 	@Override
