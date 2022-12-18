@@ -64,7 +64,7 @@ public abstract class TankActive implements Collidable,Renderable {
         position.y = tank_physics.getPosition().y * 32f; // todo to normalize
 //        slope_angle = owner.getGamescreen().getGround().getSlope(position);  // use in actual version;
         slope_angle = MyGame.handle.ground.getSlope(position); //todo to be omitted after debug
-        tank_physics.applyForce(new Vector2(0,-10f).rotateRad((float) (this.getSlope_angle())),tank_physics.getPosition(),true);
+//        tank_physics.applyForce(new Vector2(0,-10f).rotateRad((float) (this.getSlope_angle())),tank_physics.getPosition(),true);
         moveTank(delta);
 
     }
