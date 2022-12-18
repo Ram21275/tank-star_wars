@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,22 +30,26 @@ public class MyGame extends Game {
 	public World physics_world;
 	public static MyGame handle;
 	public OrthographicCamera camera;
-	World world = new World(new Vector2(0, -10), true);
+//	World world = new World(new Vector2(0, 0), true);
+	Box2DDebugRenderer debugRenderer;
 
-	private Ground ground; //todo debug testing to be omitted after test
+
+	Ground ground; //todo debug testing to be omitted after test
 	Vector2 def_screen_size  = new Vector2(16*50,9*50);
 	@Override
 	public void create () {
-		world = new World(new Vector2(0, -10), true); // todo debug testing to be omited after done
+		physics_world = new World(new Vector2(0, -10), true); // todo debug testing to be omited after done
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
 		mscreen = new MainScreen(this);
 		gscreen = new GameScreen(this);
 		rscreen = new ResultScreen(this);
-		ground = new Ground();
+
 //		this.setScreen(new MainScreen(this));
+		debugRenderer = new Box2DDebugRenderer();
 		MyGame.handle = this;
+		ground = new Ground();
 
 	}
 
@@ -57,12 +62,13 @@ public class MyGame extends Game {
 		Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		debugRenderer.render(physics_world, camera.combined.scl(32));
 //		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		ground.render();
-		batch.end();
+//		batch.setProjectionMatrix(camera.combined);
+//		batch.begin();
+//		ground.render();
+//		batch.end();
 		super.render();
 	}
 	
