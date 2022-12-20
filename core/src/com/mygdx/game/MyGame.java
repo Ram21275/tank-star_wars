@@ -19,6 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 
 // TODO: Complete GameScreen First
 public class MyGame extends Game {
@@ -33,13 +36,18 @@ public class MyGame extends Game {
 //	World world = new World(new Vector2(0, 0), true);
 	Box2DDebugRenderer debugRenderer;
 	public TankActive tank;
+	public static LinkedList<Renderable> render_these = new LinkedList<>();
+	private static LinkedList<Renderable> render_it;
 
 
 	Ground ground; //todo debug testing to be omitted after test
 	Vector2 def_screen_size  = new Vector2(16*50,9*50);
+	private BuratinoActive tank2;
+
 	@Override
 	public void create () {
 		physics_world = new World(new Vector2(0, -10), true); // todo debug testing to be omited after done
+		physics_world.setContactListener(new ContactHandler());
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		batch = new SpriteBatch();
@@ -52,6 +60,7 @@ public class MyGame extends Game {
 		MyGame.handle = this;
 		ground = new Ground();
 		tank = new AbramsActive();
+		tank2 = new BuratinoActive();
 
 	}
 
@@ -65,15 +74,23 @@ public class MyGame extends Game {
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		physics_world.step(1 / 60f, 6, 2);
+//		camera.position.x = tank.getPosition().x*32f;camera.position.y = tank.getPosition().y*32f;
 		debugRenderer.render(physics_world, camera.combined.scl(32));
 //		ScreenUtils.clear(0, 0, 0.2f, 1);
+
 		camera.update();
 //		batch.setProjectionMatrix(camera.combined);
 //		batch.begin();
 //		ground.render();
-		tank.render();
-//		batch.end();
+//		tank.render();
+//		tank2.render();
+
 		super.render();
+		render_it = (LinkedList<Renderable>) render_these.clone();
+		Iterator<Renderable> i = render_it.iterator();
+		while (i.hasNext()){
+			i.next().render();
+		}
 	}
 	
 	@Override

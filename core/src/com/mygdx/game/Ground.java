@@ -36,8 +36,9 @@ public class Ground implements Collidable , Renderable {
         vertices[100].x = Gdx.graphics.getWidth()/32f;
         vertices[101] = new Vector2(Gdx.graphics.getWidth()/32f,Gdx.graphics.getHeight()/32f);
         ChainShape ps2  = new ChainShape(); ps2.createChain(vertices);
-        f = physics_body.createFixture(ps2,1.0f); ps2.dispose();
+        physics_body.createFixture(ps2,1.0f).setUserData(this); ps2.dispose();
         this.generateAssets();
+
     }
     public void generateAssets()
     {
@@ -84,7 +85,6 @@ public class Ground implements Collidable , Renderable {
                 new VertexAttribute(VertexAttributes.Usage.Position,3,ShaderProgram.POSITION_ATTRIBUTE),
                 new VertexAttribute(VertexAttributes.Usage.TextureCoordinates,2,ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
         shape.setVertices(vertices);
-
         shape.setIndices(indices);
     }
 
@@ -94,7 +94,7 @@ public class Ground implements Collidable , Renderable {
         float min = 0.375f;
         float[] c = new float[ground_coord.length];
         Arrays.fill(c, -1.0f);
-        float x = ((float)(ground_coord.length - 1))/4f;
+        float x = ((float)(ground_coord.length - 1))/8f;
 
         for (int i = 0; (int)(x * i)< c.length; i++) {
             c[(int)(x * i)] = (float) Math.random() * (max - min ) + min;
@@ -123,7 +123,7 @@ public class Ground implements Collidable , Renderable {
         // TODO: 17/12/22 write this function
         float n_x = position.x/Gdx.graphics.getWidth();
         n_x = n_x / 0.01f;
-        return (ground_coord[((int) n_x) + 1][1] - ground_coord[((int) n_x)][1])/0.01f;
+        return (float) Math.atan((ground_coord[((int) n_x) + 1][1] - ground_coord[((int) n_x)][1])/0.01f);
     }
 
 
@@ -156,11 +156,74 @@ public class Ground implements Collidable , Renderable {
     }
 
     public void setGroundCoord(float[][] ground_coord) {
-        this.ground_coord = ground_coord;
+        {
+            this.ground_coord = ground_coord;
+            physics_body.destroyFixture(physics_body.getFixtureList().first());
+            Vector2[] vertices = new Vector2[102];
+            for (int i = 1; i < vertices.length - 1; i++) {
+                vertices[i] = new Vector2(ground_coord[i - 1][0] * Gdx.graphics.getWidth() / 32f, ground_coord[i - 1][1] * Gdx.graphics.getHeight() / 32f);
+            }
+            vertices[0] = new Vector2(0.01f, Gdx.graphics.getHeight() / 32f);
+            vertices[100].x = Gdx.graphics.getWidth() / 32f;
+            vertices[101] = new Vector2(Gdx.graphics.getWidth() / 32f, Gdx.graphics.getHeight() / 32f);
+            ChainShape ps2 = new ChainShape();
+            ps2.createChain(vertices);
+            physics_body.createFixture(ps2, 1.0f).setUserData(this);
+            ps2.dispose();
+        }
+        float[] vertices = new float[102*5];
+        vertices[0] = 0f;
+        vertices[0 + 1] = 0f;
+        vertices[0 + 2] = 0f;
+        vertices[0 + 3] = 0f;
+        vertices[0 + 4] = 1f;
+
+        vertices[5] = 1f * Gdx.graphics.getWidth();
+        vertices[5 + 1] = 0f;
+        vertices[5 + 2] = 0f;
+        vertices[5 + 3] = 1f;
+        vertices[5 + 4] = 1f;
+
+        for (int i = 0; i < 100; i++) {
+            vertices[((i+2)*5) + 0] = ground_coord[i][0] * Gdx.graphics.getWidth(); // x
+            vertices[((i+2)*5) + 1] = ground_coord[i][1] * Gdx.graphics.getHeight(); // y
+            vertices[((i+2)*5) + 2] = 0; //z
+            vertices[((i+2)*5) + 3] = ground_coord[i][0]; //u
+            vertices[((i+2)*5) + 4] = 0f;//v
+        }
+        vertices[((99+2)*5) + 0] = Gdx.graphics.getWidth();
+
+        short[] indices = new short[100 *3];
+        for (int i = 0; i < 100 -1; i++) {
+            indices[(i*3) + 0] = 0;
+            indices[(i*3) + 1] = (short) (i + 2);
+            indices[(i*3) + 2] = (short) (i + 3);
+        }
+        indices[299] = 0;
+        indices[298] = 1;
+        indices[297] = 101;
+
+        shape.dispose();
+
+        shape = new Mesh(true,ground_coord.length + 2,indices.length,
+                new VertexAttribute(VertexAttributes.Usage.Position,3,ShaderProgram.POSITION_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates,2,ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+        shape.setVertices(vertices);
+        shape.setIndices(indices);
     }
 
     @Override
-    public void collide(Collidable collide_with) {
+    public void beginCollide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void colide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void endCollide(Collidable collide_with) {
 
     }
 

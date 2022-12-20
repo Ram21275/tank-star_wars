@@ -17,7 +17,17 @@ public class AirDrop implements Collidable {
     }
 
     @Override
-    public void collide(Collidable collide_with) {
+    public void beginCollide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void colide(Collidable collide_with) {
+
+    }
+
+    @Override
+    public void endCollide(Collidable collide_with) {
 
     }
 

@@ -3,12 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 //import sun.java2d.xr.XIDGenerator;
 
 import javax.swing.text.TabableView;
+import java.security.Key;
 import java.util.HashMap;
 
 //todo: make this class, delete unnecessary setters getters;
@@ -33,24 +32,27 @@ public abstract class TankActive implements Collidable,Renderable {
     private boolean rin;
     private boolean lrv;
     private boolean rrv;
+    private boolean input_enable = false;
 
     public TankActive() { //todo create a constuctor with Passive Tank as parameter
         //use this one for debug purpose only
         position = new Vector2(Gdx.graphics.getWidth()/3f,2*Gdx.graphics.getHeight()/3f);
+        ammunition = new HashMap<>();
         generatePhysicsBody();
         lin = false;
         rin = false;
         lrv = false;
         rrv = false;
-
-
+        ground = MyGame.handle.ground;
+        MyGame.render_these.add(this);
     }
     public void generatePhysicsBody() {
-        BodyDef bd = new BodyDef(); bd.type = BodyDef.BodyType.DynamicBody; bd.position.set(position.x/32f,position.y/32f); bd.fixedRotation = false;
+        BodyDef bd = new BodyDef(); bd.type = BodyDef.BodyType.DynamicBody; bd.position.set(position.x/32f,position.y/32f); bd.fixedRotation = true;
         tank_physics = MyGame.handle.physics_world.createBody(bd);
 
-        PolygonShape ps  = new PolygonShape(); ps.setAsBox(10/32f,5f/32f);
-        tank_physics.createFixture(ps,1.0f); ps.dispose();
+        PolygonShape ps  = new PolygonShape(); ps.setAsBox(10f/32f,5f/32f);
+        tank_physics.createFixture(ps,1.0f).setUserData(this); ps.dispose();
+
     }
     public void setHealth(int health){
         owner.setHealth(health);
@@ -60,12 +62,24 @@ public abstract class TankActive implements Collidable,Renderable {
     }
 
     public void update(float delta) {
+        input_enable = true;// todo omit after making a contactlistener
+
         position.x = tank_physics.getPosition().x * 32f; // todo to normalize
         position.y = tank_physics.getPosition().y * 32f; // todo to normalize
 //        slope_angle = owner.getGamescreen().getGround().getSlope(position);  // use in actual version;
         slope_angle = MyGame.handle.ground.getSlope(position); //todo to be omitted after debug
-        tank_physics.applyForce(new Vector2(0,-10f).rotateRad((float) (this.getSlope_angle())),tank_physics.getPosition(),true);
-        moveTank(delta);
+
+        if(input_enable) {
+//            tank_physics.applyForce(new Vector2(0,-10f).rotateRad((float) (this.getSlope_angle())),tank_physics.getPosition(),false);
+            moveTank(delta);
+            if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
+                loadAmmo();
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
+                fireBullet(1);
+            }
+        }
+
 
     }
     @Override
@@ -76,7 +90,12 @@ public abstract class TankActive implements Collidable,Renderable {
 
     public void fireBullet(int ID)
     {
-
+        Bullet b = ammunition.get(ID);
+        if(b != null)
+        {
+            b.spawn(tank_physics.getPosition().add(0,10/32f),100,45);
+            ammunition.remove(ID);
+        }
     }
     public void moveTank(float delta)
     {
@@ -88,8 +107,9 @@ public abstract class TankActive implements Collidable,Renderable {
         if(lin)
         {
             Vector2 v = new Vector2(-3f,-1);
-            tank_physics.setLinearVelocity(v);
+//            tank_physics.setLinearVelocity(v.rotateRad(ground.getSlope(position)));
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
+            tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
             if(fuel > 0){
                 fuel -= 1 * (delta);
             } else {
@@ -99,8 +119,9 @@ public abstract class TankActive implements Collidable,Renderable {
         if (rin){
 
             Vector2 v = new Vector2(3f,-1);
-            tank_physics.setLinearVelocity(v);
+//            tank_physics.setLinearVelocity(v.rotateRad(ground.getSlope(position)));
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
+            tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
             if(fuel > 0){
                 fuel -= 1 * (delta);
             } else {
@@ -112,8 +133,8 @@ public abstract class TankActive implements Collidable,Renderable {
     public void destroyTank(){
 
     }
-    public void onHitFallBack(int accuracy) {
-
+    public void onHitFallBack(float accuracy) {
+        System.out.println(accuracy);
     }
     public Vector2 getPosition() {
         return position;
@@ -233,6 +254,8 @@ public abstract class TankActive implements Collidable,Renderable {
         this.owner = owner;
     }
 
+
+
     public void getAirDrop(AirDrop airdrop) {
 
     }
@@ -240,6 +263,31 @@ public abstract class TankActive implements Collidable,Renderable {
     public abstract void generateTankNozzle();
     public abstract void setSpeed();
     public abstract void loadAmmo();
+
+    @Override
+    public void beginCollide(Collidable collide_with) {
+        if(collide_with.getClass() == ground.getClass()){
+//            System.out.println("tank touched grass");
+//            input_enable = true;
+        } else if (collide_with.getClass() == AirDrop.class) {
+            this.getAirDrop((AirDrop) collide_with);
+        }
+    }
+    @Override
+    public void endCollide(Collidable collide_with) {
+
+        if(collide_with.getClass() == ground.getClass()){
+//            tank_physics.setLinearVelocity(0,0);
+//            System.out.println("tank is flying");
+//            input_enable = false;
+        }
+    }
+    @Override
+    public void colide(Collidable collide_with) {
+
+    }
+
+
 
 
 }
@@ -250,10 +298,7 @@ class AbramsActive extends TankActive {
         System.out.println("yolo");
     }
 
-    @Override
-    public void collide(Collidable collide_with) {
 
-    }
 
     @Override
     public void dispose() {
@@ -277,18 +322,14 @@ class AbramsActive extends TankActive {
 
     @Override
     public void loadAmmo() {
-
+        getAmmunition().put(1,new Bullet(this));
     }
+
 }
 
 class FrostActive extends TankActive {
 
     @Override
-    public void collide(Collidable collide_with) {
-
-    }
-
-    @Override
     public void dispose() {
 
     }
@@ -310,18 +351,13 @@ class FrostActive extends TankActive {
 
     @Override
     public void loadAmmo() {
-
+        getAmmunition().put(1,new Bullet(this));
     }
 }
 
 class BuratinoActive extends TankActive {
 
     @Override
-    public void collide(Collidable collide_with) {
-
-    }
-
-    @Override
     public void dispose() {
 
     }
@@ -343,6 +379,6 @@ class BuratinoActive extends TankActive {
 
     @Override
     public void loadAmmo() {
-
+        getAmmunition().put(1,new Bullet(this));
     }
 }
