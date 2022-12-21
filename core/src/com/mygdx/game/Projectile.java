@@ -8,7 +8,10 @@ interface Projectile extends Collidable {
 }
 
 interface Collidable extends Disposable {
-    void collide(Collidable collide_with);
+    void beginCollide(Collidable collide_with);
+
+    void colide(Collidable collide_with);
+    void endCollide(Collidable collide_with);
 }
 
 interface Disposable {
