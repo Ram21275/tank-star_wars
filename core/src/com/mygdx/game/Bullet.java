@@ -46,7 +46,7 @@ public class Bullet implements Projectile , Renderable {
         shape.setRadius(3/32f);
         physics_instance.createFixture(shape,1.0f).setUserData(this);
         shape.dispose();
-        physics_instance.applyLinearImpulse(new Vector2(40/5f,0).rotateDeg(angle_deg).scl(physics_instance.getMass()),physics_instance.getPosition(),true);
+        physics_instance.applyLinearImpulse(new Vector2(power/5f,0).rotateDeg(angle_deg).scl(physics_instance.getMass()),physics_instance.getPosition(),true);
     }
 
 

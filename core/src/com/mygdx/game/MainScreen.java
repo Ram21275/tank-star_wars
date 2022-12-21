@@ -267,6 +267,8 @@ public class MainScreen implements Screen {
         }
         if(new_game_start_game.isChecked())
         {
+            GameScreen g  = new GameScreen(game, players);
+            game.setGscreen(g);
             for (int i = 0; i < 2; i++) {
                 switch (tank_no[i]){
                     case 0:
@@ -282,9 +284,10 @@ public class MainScreen implements Screen {
                         throw new IllegalStateException("Unexpected value: " + tank_no[i]);
                 }
             }
-            GameScreen g  = new GameScreen(game, players);
+
+
             game.setScreen(g);
-            game.setGscreen(g);
+            g.generateActivePlayer(players);
             new_game_start_game.setChecked(false);
         }
         if(load_game_exit.isChecked())
@@ -336,8 +339,8 @@ public class MainScreen implements Screen {
     }
 
     public void generatePlayers(PassivePlayer player1){
-        players[1] = player1;
-        players[2] = new PassivePlayer(0,"Player 2",2);
+        players[0] = player1;
+        players[1] = new PassivePlayer(0,"Player 2",2);
     }
 
     public ActivePlayer[] generateActivePlayers(){

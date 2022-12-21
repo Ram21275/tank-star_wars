@@ -52,6 +52,7 @@ public class ActivePlayer {
 
     public void setHealth(int health) {
         this.health = health;
+        System.out.println(health);
     }
 
     public TankActive getTank() {

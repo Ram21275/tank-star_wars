@@ -66,8 +66,6 @@ public abstract class TankActive implements Collidable,Renderable {
         rin = false;
         lrv = false;
         rrv = false;
-        ground = owner.getGamescreen().getGround();
-        owner.getGamescreen().render_these.add(this);
         collision_seq = new HashSet<>();
         if(tankPassive.owner.getPlayer_no() == 1) {
             input_enable = true;
@@ -130,7 +128,7 @@ public abstract class TankActive implements Collidable,Renderable {
         Bullet b = ammunition.poll();
         if(b != null)
         {
-            b.spawn(tank_physics.getPosition().add(0,10/32f),100,45);
+            b.spawn(tank_physics.getPosition().add(0,10/32f),power,angle);
         }
     }
     public void moveTank(float delta)
@@ -145,8 +143,9 @@ public abstract class TankActive implements Collidable,Renderable {
             Vector2 v = new Vector2(-3f,-1);
 //            tank_physics.setLinearVelocity(v.rotateRad(ground.getSlope(position)));
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
-            tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
+
             if(fuel > 0){
+                tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
                 fuel -= 10 * (delta);
             } else {
                 fuel = 0;
@@ -157,8 +156,8 @@ public abstract class TankActive implements Collidable,Renderable {
             Vector2 v = new Vector2(3f,-1);
 //            tank_physics.setLinearVelocity(v.rotateRad(ground.getSlope(position)));
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
-            tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
             if(fuel > 0){
+                tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
                 fuel -= 10 * (delta);
             } else {
                 fuel = 0;
@@ -293,6 +292,7 @@ public abstract class TankActive implements Collidable,Renderable {
         ground = owner.getGamescreen().getGround();
         power = owner.getGamescreen().getPower();
         angle = owner.getGamescreen().getAngle();
+        ground = owner.getGamescreen().getGround();
         owner.getGamescreen().render_these.add(this);
     }
 

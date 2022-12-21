@@ -28,11 +28,13 @@ public class MyGame extends Game {
 
 	@Override
 	public void create () {
+		player = new PassivePlayer(0,"Player 1",1);
 		MyGame.handle = this;
 		batch = new SpriteBatch();
 		mscreen = new MainScreen(this);
+
 //		gscreen = new GameScreen(this);
-		rscreen = new ResultScreen(this);
+//		rscreen = new ResultScreen(this);
 
 		this.setScreen(mscreen);
 
@@ -96,15 +98,7 @@ public class MyGame extends Game {
 	}
 	public PassivePlayer getPlayer(){
 
-		return null;
-	}
-	public MainScreen getMenuScreen(){
-
-		return null;
-	}
-	public GameScreen getGameScreen(){
-
-		return null;
+		return player;
 	}
 
 

@@ -25,6 +25,13 @@ public class GameScreen implements Screen {
     public World physics_world;
     Box2DDebugRenderer debugRenderer;
     public OrthographicCamera camera;
+
+    public void generateActivePlayer(PassivePlayer[] passivePlayer) {
+        for (int i = 0; i < 2; i++) {
+            player[i] = passivePlayer[i].generateActivePlayer();
+        }
+    }
+
     private ActivePlayer[] player;
     private int playerturn;
     private ProgressBar health_p1;
@@ -92,9 +99,8 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         airdroplist = new HashMap<>();
-        for (int i = 0; i < 2; i++) {
-            player[i] = passivePlayer[i].generateActivePlayer();
-        }
+        this.player = new ActivePlayer[2];
+
         playerturn = 0;
         this.game = game;
 
