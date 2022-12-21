@@ -22,17 +22,12 @@ public class ResultScreen implements Screen,Renderable {
     private Image player_tank;
     private Label result;
     private Label player;
-    private int save_state_id;
-    private Label result_p1_label;
-    private int label_p1;
-    private Label coins_earned_label;
-
+    private PassivePlayer[] players;
+    private PassivePlayer winner;
     ResultScreen(MyGame game)
     {
         this.game = game;
-
-
-
+        players = new PassivePlayer[2];
     }
     @Override
     public void show() {
@@ -48,7 +43,7 @@ public class ResultScreen implements Screen,Renderable {
         exit_main = new TextButton("Return to Menu",skin);
         player_tank = new Image(new Texture(Gdx.files.internal("kindpng_1188707.png")));
         result = new Label("VICTORY",skin);
-        player = new Label("PLAYER 1",skin);
+        player = new Label(winner.getName(),skin);
 
 
         stage.addActor(table);
@@ -95,6 +90,9 @@ public class ResultScreen implements Screen,Renderable {
 
         if(replay.isChecked())
         {
+            //add some other stuff after mygame is finished
+            GameScreen g = new GameScreen(game,players);
+            game.setGscreen(g);
             game.setScreen(game.getGscreen());
             replay.setChecked(false);
         }
@@ -144,12 +142,14 @@ public class ResultScreen implements Screen,Renderable {
     public void exit(){
 
     }
-    public void setPlayerPassive(){
-
+    public void setPlayerPassive(ActivePlayer[] activePlayer){
+        for (int i = 0; i < players.length; i++) {
+            players[i] = activePlayer[i].getPassivePlayer();
+        }
     }
 
-    public void setResult(){
-
+    public void setResult(int loser_index){
+        winner = players[(loser_index + 1)%2];
     }
     public void setCoinsEarned(){
 

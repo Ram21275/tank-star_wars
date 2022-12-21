@@ -16,9 +16,13 @@ public abstract class TankPassive {
     Sprite sprite;
     Image image;
     String name;
-
+    PassivePlayer owner;
+    TankPassive(PassivePlayer owner) {
+        setAsset();
+        this.owner = owner;
+    }
     public abstract void setAsset();
-
+    public abstract TankActive getTankActive();
     public void setAnimation(Animation<TextureRegion> animation) {
         this.animation = animation;
     }
@@ -50,38 +54,73 @@ public abstract class TankPassive {
     public void setName(String name) {
         this.name = name;
     }
+
+    public PassivePlayer getOwner() {
+        return owner;
+    }
+
+    public void setOwner(PassivePlayer owner) {
+        this.owner = owner;
+    }
 }
 
 class AbramsPassive extends TankPassive {
 
-    public AbramsPassive()
-    {
-        this.setAsset();
+
+    AbramsPassive(PassivePlayer owner) {
+        super(owner);
     }
+
     @Override
     public void setAsset() {
+        animation = null; sprite = null; //todo do after asmit gives photos
+        image = null;
+        name = "Abrams";
+    }
 
+    @Override
+    public TankActive getTankActive() {
+        TankActive t  = new AbramsActive(this);
+        return t;
     }
 }
 
 class FrostPassive extends TankPassive {
-    public FrostPassive()
-    {
-        this.setAsset();
+
+
+    FrostPassive(PassivePlayer owner) {
+        super(owner);
     }
+
     @Override
     public void setAsset() {
+        animation = null; sprite = null; //todo do after asmit gives photos
+        image = null;
+        name = "Frost";
+    }
 
+    @Override
+    public TankActive getTankActive() {
+        TankActive t  = new FrostActive(this);
+        return t;
     }
 }
 
-class BuggyPassive extends TankPassive {
-    public BuggyPassive()
-    {
-        this.setAsset();
+class BuratinoPassive extends TankPassive {
+    BuratinoPassive(PassivePlayer owner) {
+        super(owner);
     }
+
     @Override
     public void setAsset() {
+        animation = null; sprite = null; //todo do after asmit gives photos
+        image = null;
+        name = "Buratino";
+    }
 
+    @Override
+    public TankActive getTankActive() {
+        TankActive t  = new BuratinoActive(this);
+        return t;
     }
 }

@@ -70,6 +70,10 @@ public class MainScreen implements Screen {
     private Window selection_window;
     private TextButton start_game;
     private ImageButton close_window;
+    private int[]  tank_no;
+
+
+    private PassivePlayer[] players;
 
     public MainScreen(MyGame game){
 
@@ -97,6 +101,10 @@ public class MainScreen implements Screen {
         t4 = new TextureRegionDrawable(tt4);
         t5 = new TextureRegionDrawable(tt5);
         t6 = new TextureRegionDrawable(tt6);
+
+        players = new PassivePlayer[2];
+        tank_no = new int[2];
+        generatePlayers(game.getPlayer()); //todo wait for asmit
 
     }
     @Override
@@ -191,6 +199,9 @@ public class MainScreen implements Screen {
         {
 
             stage.addActor(new_game_window);
+            for (int i = 0; i < players.length; i++) {
+                tank_no[i] = 0;
+            }
             new_game.setChecked(false);
         }
         if(load_game.isChecked())
@@ -204,42 +215,48 @@ public class MainScreen implements Screen {
         {
 //            System.out.println("yolo");//
             tank_1.setText("Abrahms");
+            tank_no[0] = 0;
             tank11.setChecked(false);
         }
         if(tank12.isChecked())
         {
 //            System.out.println("yolo");//
             tank_1.setText("Frost");
-            tank11.setChecked(false);
+            tank_no[0] = 1;
+            tank12.setChecked(false);
         }
         if(tank13.isChecked())
         {
 //            System.out.println("yolo");//
             tank_1.setText("Buggy");
-            tank11.setChecked(false);
+            tank_no[0] = 2;
+            tank13.setChecked(false);
         }
         if(tank21.isChecked())
         {
 //            System.out.println("yolo");//
             tank_2.setText("Abrahms");
-            tank11.setChecked(false);
+            tank_no[1] = 0;
+            tank21.setChecked(false);
         }
         if(tank22.isChecked())
         {
 //            System.out.println("yolo");//
             tank_2.setText("Frost");
-            tank11.setChecked(false);
+            tank_no[1] = 1;
+            tank22.setChecked(false);
         }
         if(tank23.isChecked())
         {
 //            System.out.println("yolo");//
             tank_2.setText("Buggy");
-            tank11.setChecked(false);
+            tank_no[1] = 2;
+            tank23.setChecked(false);
         }
         for (int i = 0; i < 5; i++) {
             if(save[i].isChecked())
             {
-                game.setScreen(game.getGscreen());
+//                game.setScreen(game.getGscreen());
                 save[i].setChecked(false);
             }
         }
@@ -250,7 +267,24 @@ public class MainScreen implements Screen {
         }
         if(new_game_start_game.isChecked())
         {
-            game.setScreen(game.getGscreen());
+            for (int i = 0; i < 2; i++) {
+                switch (tank_no[i]){
+                    case 0:
+                        players[i].setTank(new AbramsPassive(players[i]));
+                        break;
+                    case 1:
+                        players[i].setTank(new FrostPassive(players[i]));
+                        break;
+                    case 2:
+                        players[i].setTank(new BuratinoPassive(players[i]));
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + tank_no[i]);
+                }
+            }
+            GameScreen g  = new GameScreen(game, players);
+            game.setScreen(g);
+            game.setGscreen(g);
             new_game_start_game.setChecked(false);
         }
         if(load_game_exit.isChecked())
@@ -302,7 +336,8 @@ public class MainScreen implements Screen {
     }
 
     public void generatePlayers(PassivePlayer player1){
-
+        players[1] = player1;
+        players[2] = new PassivePlayer(0,"Player 2",2);
     }
 
     public ActivePlayer[] generateActivePlayers(){

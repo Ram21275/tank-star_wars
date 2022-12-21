@@ -6,9 +6,19 @@ public class PassivePlayer {
     private int coins;
     private String name;
     private TankPassive tank;
+    private int player_no;
 
-    public void generateActivePlayer() {
-
+    public  PassivePlayer(int coins,String name,int player_no) {
+        this.coins = coins;
+        this.name = name;
+        tank = null;
+        this.player_no = player_no;
+    }
+    public ActivePlayer generateActivePlayer() {
+        if(tank == null) {
+            return null;
+        }
+        return  new ActivePlayer(this);
     }
     public int getCoins() {
         return coins;
@@ -32,5 +42,13 @@ public class PassivePlayer {
 
     public void setTank(TankPassive tank) {
         this.tank = tank;
+    }
+
+    public int getPlayer_no() {
+        return player_no;
+    }
+
+    public void setPlayer_no(int player_no) {
+        this.player_no = player_no;
     }
 }

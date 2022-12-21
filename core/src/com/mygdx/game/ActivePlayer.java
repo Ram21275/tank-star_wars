@@ -9,20 +9,29 @@ public class ActivePlayer {
     private int health;
     private TankActive tank;
     private String name;
-
+    private PassivePlayer passivePlayer;
 
     ActivePlayer(PassivePlayer player_data)
     {
         // TODO: 08/12/22 implement after PassivePlayer
+        gamescreen = MyGame.handle.getGscreen();
+        health = 100;
+        tank = player_data.getTank().getTankActive();
+        tank.setOwner(this);
+        name = player_data.getName();
+        passivePlayer = player_data;
     }
     public void moveTank(float delta) {
         //todo implement move tank after tank active;
+        tank.moveTank(delta);
     }
     public void setTankAngle(int angle){
+        tank.setAngle(angle);
         //todo  implement after tank active;
     }
 
     public void setTankPower(int power) {
+        tank.setPower(power);
         ///todo implement after tank active;
     }
 
@@ -55,6 +64,14 @@ public class ActivePlayer {
 
     public String getName() {
         return name;
+    }
+
+    public PassivePlayer getPassivePlayer() {
+        return passivePlayer;
+    }
+
+    public void setPassivePlayer(PassivePlayer passivePlayer) {
+        this.passivePlayer = passivePlayer;
     }
 
     public void setName(String name) {

@@ -27,7 +27,7 @@ public class Ground implements Collidable , Renderable {
         this.generateTerrain();
 
         BodyDef bd2 = new BodyDef(); bd2.type = BodyDef.BodyType.StaticBody; bd2.position.set(0,0); bd2.fixedRotation = true;
-        physics_body = MyGame.handle.physics_world.createBody(bd2);
+        physics_body = MyGame.handle.getGscreen().physics_world.createBody(bd2);
         Vector2[] vertices = new Vector2[102];
         for (int i = 1; i < vertices.length - 1; i++) {
             vertices[i] = new Vector2(ground_coord[i -1][0] * Gdx.graphics.getWidth()/32f,ground_coord[i -1][1] * Gdx.graphics.getHeight()/32f);
@@ -243,7 +243,7 @@ public class Ground implements Collidable , Renderable {
         update(Gdx.graphics.getDeltaTime());
         ground_texture.bind();
         shader.bind();
-        shader.setUniformMatrix("u_projTrans", MyGame.handle.camera.combined);
+        shader.setUniformMatrix("u_projTrans", MyGame.handle.getGscreen().camera.combined);
         shader.setUniformi("u_texture", 0);
         shape.render(shader, GL20.GL_TRIANGLES);
     }

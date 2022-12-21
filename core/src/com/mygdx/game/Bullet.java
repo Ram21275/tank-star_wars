@@ -18,6 +18,7 @@ public class Bullet implements Projectile , Renderable {
     private Texture image;
     private String name;
     private Body physics_instance;
+
     private TankActive owner;
     private HashSet<Collidable> collision_seq;
 
@@ -26,7 +27,7 @@ public class Bullet implements Projectile , Renderable {
         this.owner = owner;
         this.generateAssets();
         collision_seq = new HashSet<>();
-        MyGame.render_these.add(this);
+        MyGame.handle.getGscreen().render_these.add(this);
     }
     public void generateAssets() {
         image = new Texture(Gdx.files.internal("badlogic.jpg"));
@@ -39,7 +40,7 @@ public class Bullet implements Projectile , Renderable {
         //todo redo after physics is properly implemented;
         def.type = BodyDef.BodyType.DynamicBody;
         def.fixedRotation = true; def.position.set(pos); def.angle = (float) (angle_deg/360f * Math.PI);//see in box2d
-        physics_instance = MyGame.handle.physics_world.createBody(def);
+        physics_instance = MyGame.handle.getGscreen().physics_world.createBody(def);
         CircleShape shape = new CircleShape();
 
         shape.setRadius(3/32f);
@@ -52,9 +53,9 @@ public class Bullet implements Projectile , Renderable {
     @Override
     public void dispose() {
 
-        MyGame.handle.physics_world.destroyBody(physics_instance);
+        MyGame.handle.getGscreen().physics_world.destroyBody(physics_instance);
         image.dispose();
-        MyGame.render_these.remove(this);
+        MyGame.handle.getGscreen().render_these.remove(this);
     }
 
     @Override
@@ -93,5 +94,21 @@ public class Bullet implements Projectile , Renderable {
             ((TankActive) collide_with).onHitFallBack((5/32f)/(new Vector2(physics_instance.getPosition()).dst(((TankActive) collide_with).getPosition().scl(1/32f))));
         }
         dispose();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TankActive getOwner() {
+        return owner;
+    }
+
+    public void setOwner(TankActive owner) {
+        this.owner = owner;
     }
 }

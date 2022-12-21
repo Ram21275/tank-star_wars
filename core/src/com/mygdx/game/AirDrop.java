@@ -6,7 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 public class AirDrop implements Collidable {
     private Vector2 position;
     private Bullet bullet;
+    private int ID;
 
+
+    AirDrop(Vector2 pos,int ID) {
+            position = new Vector2(pos);
+            bullet = new Bullet(null);
+            this.ID = ID;
+    }
     public void spawn(Vector2 pos)
     {
 
@@ -50,5 +57,9 @@ public class AirDrop implements Collidable {
 
     public void setBullet(Bullet bullet) {
         this.bullet = bullet;
+    }
+
+    public int getID() {
+        return ID;
     }
 }
