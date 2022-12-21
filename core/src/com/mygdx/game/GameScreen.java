@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import sun.java2d.opengl.GLXSurfaceData;
+//import sun.java2d.opengl.GLXSurfaceData;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -53,6 +54,12 @@ public class GameScreen implements Screen {
     private Table downlabel;
     private Table uplabel;
     private Window pause_menu;
+    private TextButton exit_prompt;
+    private TextButton exit_main;
+    private Label Power_box;
+    private Music music;
+    public long serialVersionUID;
+
 
     public  LinkedList<Renderable> render_these;
     private  LinkedList<Renderable> render_it;
@@ -324,5 +331,7 @@ public class GameScreen implements Screen {
         game.setRscreen(r);
         game.setScreen(game.getRscreen());
     }
+
+
 
 }

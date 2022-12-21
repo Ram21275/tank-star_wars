@@ -1,26 +1,10 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.HashMap;
 
 
 // TODO: Complete GameScreen First
@@ -31,6 +15,11 @@ public class MyGame extends Game {
 	private GameScreen gscreen;
 	private  ResultScreen rscreen;
 	public static MyGame handle;
+	private PassivePlayer player;
+	private int coins;
+	private static HashMap<Integer,TankPassive> tanklist;
+	private static HashMap<Integer,Save> save_files;
+	public long serialVersionUID;
 
 //	World world = new World(new Vector2(0, 0), true);
 
@@ -101,5 +90,64 @@ public class MyGame extends Game {
 
 	public void setRscreen(ResultScreen rscreen) {
 		this.rscreen = rscreen;
+	}
+	public void exit(){
+
+	}
+	public PassivePlayer getPlayer(){
+
+		return null;
+	}
+	public MainScreen getMenuScreen(){
+
+		return null;
+	}
+	public GameScreen getGameScreen(){
+
+		return null;
+	}
+
+
+	public int getCoins(){
+		return 0;
+	}
+	public void setCoins(){
+
+	}
+	public void setSave(int id,Save savefile){
+
+	}
+	public void loadPlayerData(){
+
+	}
+	public int generateSaveData(){
+
+		return 0;
+	}
+	public void loadGameData(){
+
+	}
+	public void setResultScreen(ResultScreen rs){
+
+	}
+	public void setGameScreen(GameScreen gs){
+
+	}
+	public void setMenuScreen(MainScreen ms){
+
+	}
+	public void getPlayer(PassivePlayer pp){
+
+	}
+	public void setPlayer(PassivePlayer pl){
+
+	}
+
+	public static HashMap<Integer, TankPassive> getTankList() {
+		return null;
+	}
+
+	public static HashMap<Integer, Integer> getSaveFiles() {
+		return null;
 	}
 }
