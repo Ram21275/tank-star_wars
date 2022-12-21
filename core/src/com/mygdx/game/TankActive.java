@@ -66,6 +66,7 @@ public abstract class TankActive implements Collidable,Renderable {
         rin = false;
         lrv = false;
         rrv = false;
+        fuel = 100;
         collision_seq = new HashSet<>();
         if(tankPassive.owner.getPlayer_no() == 1) {
             input_enable = true;
@@ -146,7 +147,7 @@ public abstract class TankActive implements Collidable,Renderable {
 
             if(fuel > 0){
                 tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
-                fuel -= 10 * (delta);
+                fuel -= 1;
             } else {
                 fuel = 0;
             }
@@ -158,7 +159,7 @@ public abstract class TankActive implements Collidable,Renderable {
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
             if(fuel > 0){
                 tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
-                fuel -= 10 * (delta);
+                fuel -= 1;
             } else {
                 fuel = 0;
             }
@@ -171,7 +172,7 @@ public abstract class TankActive implements Collidable,Renderable {
     public void onHitFallBack(float accuracy) {
         System.out.println(accuracy);
         tank_physics.applyLinearImpulse(new Vector2(10/32f,0).rotateRad(ground.getSlope(position)).rotateDeg(90),tank_physics.getPosition(),true);
-        owner.setHealth((int) (owner.getHealth() - (accuracy*owner.getHealth()/4)));
+        owner.setHealth((int) (owner.getHealth() - (accuracy*20)));
     }
     public Vector2 getPosition() {
         return position;

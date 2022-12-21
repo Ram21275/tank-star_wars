@@ -93,7 +93,9 @@ public class ResultScreen implements Screen,Renderable {
             //add some other stuff after mygame is finished
             GameScreen g = new GameScreen(game,players);
             game.setGscreen(g);
+
             game.setScreen(game.getGscreen());
+            g.generateActivePlayer(players);
             replay.setChecked(false);
         }
 
@@ -149,7 +151,7 @@ public class ResultScreen implements Screen,Renderable {
     }
 
     public void setResult(int loser_index){
-        winner = players[(loser_index + 1)%2];
+        winner = players[(loser_index)%2];
     }
     public void setCoinsEarned(){
 

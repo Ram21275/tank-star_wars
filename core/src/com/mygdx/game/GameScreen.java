@@ -15,12 +15,13 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 //import sun.java2d.opengl.GLXSurfaceData;
 
+import java.io.SequenceInputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen, Serializable {
     private MyGame game;
     public World physics_world;
     Box2DDebugRenderer debugRenderer;
@@ -228,11 +229,17 @@ public class GameScreen implements Screen {
         {
 //            game.setScreen(game.getRscreen());
             player[playerturn].getTank().setPower(power);
-            player[playerturn].getTank().setAngle(angle);
+            if(playerturn == 1){
+                player[playerturn].getTank().setAngle(180 - angle);
+            } else {
+                player[playerturn].getTank().setAngle(angle);
+            }
+
             player[playerturn].getTank().fireBullet(0);
             player[playerturn].getTank().setInput_enable(false);
             playerturn = (playerturn + 1)%2;
             player[playerturn].getTank().setInput_enable(true);
+            player[playerturn].getTank().setFuel(100);
             fire.setChecked(false);
         }
         if(power_left.isChecked())
@@ -263,6 +270,8 @@ public class GameScreen implements Screen {
             angle_right.setChecked(false);
 
         }
+        health_p1.setValue(player[0].getHealth());
+        health_p2.setValue(player[1].getHealth());
     }
 
     @Override
