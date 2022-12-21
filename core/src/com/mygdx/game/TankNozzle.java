@@ -1,12 +1,15 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.Serializable;
+
 // TODO: 08/12/22 implement tank nozzle, uml remove colidable;
-public class TankNozzle {
+public class TankNozzle implements Serializable {
     private TankActive tank;
     private Sprite nozzle;
     private Vector2 nozzle_position;

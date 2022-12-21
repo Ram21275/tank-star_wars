@@ -1,14 +1,22 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
+import org.junit.Test;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 
 // TODO: Complete GameScreen First
-public class MyGame extends Game {
+public class MyGame extends Game implements Serializable {
 	public SpriteBatch batch;
 //	Texture img;
 	private  MainScreen mscreen;
@@ -18,51 +26,61 @@ public class MyGame extends Game {
 	private PassivePlayer player;
 	private int coins;
 	private static HashMap<Integer,TankPassive> tanklist;
-	private static HashMap<Integer,Save> save_files;
-	public long serialVersionUID;
+	private HashMap<Integer,Save> save_files;
+	public static long serialVersionUID = 1023L;
 
-//	World world = new World(new Vector2(0, 0), true);
-
-	Ground ground; //todo debug testing to be omitted after test
-	Vector2 def_screen_size  = new Vector2(16*50,9*50);
 
 	@Override
+
 	public void create () {
-		player = new PassivePlayer(0,"Player 1",1);
-		MyGame.handle = this;
-		batch = new SpriteBatch();
-		mscreen = new MainScreen(this);
-
-//		gscreen = new GameScreen(this);
-//		rscreen = new ResultScreen(this);
-
-		this.setScreen(mscreen);
-
-
+		MyGame game = null;
+		boolean ser = false;
+		try {
+			Json json = new Json(JsonWriter.OutputType.json);
+			JsonReader json2 = new JsonReader();
+			JsonValue base = json2.parse(Gdx.files.internal("s_file.json"));
+			game = json.fromJson(MyGame.class,base.toJson(JsonWriter.OutputType.json));
+		} catch (Exception e) {
+			System.out.println("new Install");
+		}
+		if(game == null) {
+			player = new PassivePlayer(0,"Player 1",1);
+			MyGame.handle = this;
+			batch = new SpriteBatch();
+			mscreen = new MainScreen(this);
+			this.setScreen(mscreen);
+			save_files = new HashMap<>();
+			for (int i = 0; i < 5; i++) {
+				save_files.put(i,new Save());
+			}
+		} else {
+			this.player = game.getPlayer();
+			this.rscreen = game.getRscreen();
+			this.gscreen = game.getGscreen();
+			this.batch = new SpriteBatch();
+			this.save_files = game.save_files;
+		}
 
 	}
 
 	@Override
 	public void render () {
-
-
-//		ScreenUtils.clear(0, 0, 0.2f, 1);
-
-
-//		batch.setProjectionMatrix(camera.combined);
-//		batch.begin();
-//		ground.render();
-//		tank.render();
-//		tank2.render();
-
 		super.render();
-
 	}
 	
 	@Override
 	public void dispose () {
+
 		batch.dispose();
-//		img.dispose();
+		PrintWriter out = null;
+		try {
+			Json json = new Json(JsonWriter.OutputType.json);
+			out = new PrintWriter(new FileWriter("s_file.json"));
+			out.write( json.toJson(this));
+			;
+		} catch (Exception e) {
+			System.out.println("this ain't good");
+		}
 	}
 
 	@Override

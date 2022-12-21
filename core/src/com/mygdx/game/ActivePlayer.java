@@ -3,7 +3,7 @@ package com.mygdx.game;
 import java.io.Serializable;
 
 //TODO: MAKE THIS CLASS
-public class ActivePlayer {
+public class ActivePlayer implements Serializable {
 
     private GameScreen gamescreen;
     private int health;

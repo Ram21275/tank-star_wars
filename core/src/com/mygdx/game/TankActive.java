@@ -6,11 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 //import sun.java2d.xr.XIDGenerator;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 //todo: make this class, delete unnecessary setters getters;
-public abstract class TankActive implements Collidable,Renderable {
+public abstract class TankActive implements Collidable,Renderable, Serializable {
     private Vector2 position;
     private float slope_angle; // radians
     private LinkedList<Bullet> ammunition;
@@ -146,7 +147,8 @@ public abstract class TankActive implements Collidable,Renderable {
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
 
             if(fuel > 0){
-                tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
+                tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position))
+                        ,tank_physics.getPosition(),true);
                 fuel -= 1;
             } else {
                 fuel = 0;
@@ -158,7 +160,8 @@ public abstract class TankActive implements Collidable,Renderable {
 //            tank_physics.setLinearVelocity(v.rotateRad(ground.getSlope(position)));
 //            tank_physics.applyForce(v,tank_physics.getPosition(),true);
             if(fuel > 0){
-                tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position)),tank_physics.getPosition(),true);
+                tank_physics.applyLinearImpulse(v.sub(tank_physics.getLinearVelocity()).scl(tank_physics.getMass()).rotateRad(ground.getSlope(position))
+                        ,tank_physics.getPosition(),true);
                 fuel -= 1;
             } else {
                 fuel = 0;

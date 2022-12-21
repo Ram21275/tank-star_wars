@@ -11,9 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Null;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Ground implements Collidable , Renderable {
+public class Ground implements Collidable , Renderable, Serializable {
     private Mesh shape;
     private ShaderProgram shader;
     private Vector2 position;

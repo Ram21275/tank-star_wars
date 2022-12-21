@@ -2,8 +2,10 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.Serializable;
+
 //TODO: IMPLEMENT THIS
-public class AirDrop implements Collidable {
+public class AirDrop implements Collidable, Serializable {
     private Vector2 position;
     private Bullet bullet;
     private int ID;

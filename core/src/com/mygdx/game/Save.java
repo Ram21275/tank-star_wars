@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
-public class Save {
+import java.io.Serializable;
+
+public class Save implements Serializable {
     private String[] serialized_files;
     public long serialVersionUID;
 

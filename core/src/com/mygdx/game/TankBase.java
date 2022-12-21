@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import java.io.Serializable;
+
 // TODO: 08/12/22 implement tankbase, uml remove colidable;
-public class TankBase {
+public class TankBase implements Serializable {
     private TankActive tank;
     private Sprite base;
     private int base_angle;

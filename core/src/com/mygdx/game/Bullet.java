@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -13,7 +14,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 // TODO: 08/12/22 implement bullet
-public class Bullet implements Projectile , Renderable {
+public class Bullet implements Projectile , Renderable, Serializable {
 
     private Texture image;
     private String name;

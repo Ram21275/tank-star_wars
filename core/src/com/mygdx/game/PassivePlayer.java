@@ -1,8 +1,10 @@
 package com.mygdx.game;
 
 
+import java.io.Serializable;
+
 //TODO: write the player class
-public class PassivePlayer {
+public class PassivePlayer implements Serializable {
     private int coins;
     private String name;
     private TankPassive tank;
