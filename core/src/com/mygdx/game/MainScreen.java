@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
@@ -21,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.util.HashMap;
 
 
 //TODO: refactor VerticalGroup to table
@@ -60,6 +63,13 @@ public class MainScreen implements Screen {
     private TextureRegionDrawable t5;
     private TextureRegionDrawable t6;
     private Image logo = new Image(new Texture(Gdx.files.internal("tankstar-usa_owler_20160227_001629_original.png")));
+    private int coins;
+    private Window save_window;
+    private static HashMap<Integer,TankPassive> tanklist;
+    private static HashMap<Integer,Save> save_files;
+    private Window selection_window;
+    private TextButton start_game;
+    private ImageButton close_window;
 
     public MainScreen(MyGame game){
 
@@ -273,6 +283,46 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
+
+    }
+
+    public void exit(){
+
+    }
+    public void render(){
+
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public void setGameData(Game game){
+
+    }
+
+    public void generatePlayers(PassivePlayer player1){
+
+    }
+
+    public ActivePlayer[] generateActivePlayers(){
+
+        return new ActivePlayer[0];
+    }
+
+    public void generateGameMenus(Game game){
+
+    }
+
+    public void playGame(){
+
+    }
+
+    public void loadGame(){
+
+    }
+
+    public void generateAssets(){
 
     }
 }
